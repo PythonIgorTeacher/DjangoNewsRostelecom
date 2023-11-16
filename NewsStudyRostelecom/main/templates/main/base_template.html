@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load static %}
+{% load bootstrap5 %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <script src="https://kit.fontawesome.com/a97047fead.js" crossorigin="anonymous"></script>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% block head %}{% endblock %}
+
+</head>
+<body>
+            <div class="row">
+                    <div class="col-4">
+                        {% include 'main/sidebar.html' %}
+                    </div>
+
+
+                    <div class="col-8">
+                        {% block content %}
+                                <div class="row">
+                                    <div class="text-center" style="margin-top:30px;">
+                                            <h1 >Главная страница</h1>
+                                    </div>
+
+                                <div class="single_news">
+                                    <div class="p-4 p-md-5 text-white rounded bg-dark" >
+                                        <div class="col-md-6 px-0">
+                                          <h1 class="display-4 fst-italic">Последняя новость</h1>
+                                          <p class="lead my-3">Начало новости, для продолжения чтения нужно пройти по ссылки ниже</p>
+                                          <p class="lead mb-0"><a href="#" class="text-white fw-bold">Полный текст...</a></p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                        {% endblock %}
+                    </div>
+
+            </div>
+
+</body>
+</html>

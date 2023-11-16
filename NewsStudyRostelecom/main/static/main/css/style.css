@@ -21,6 +21,7 @@ a:active - нажатая
 */
 
 aside img{
+    padding: 0px 10px;
     width: auto;
     height: 30px;
     float: left;
@@ -34,21 +35,31 @@ span.logo{
     position:relative;
     top: -5px;
 }
-
+aside{
+    padding: 35px 25px;
+    background: #212529;
+    width: 75%;
+}
+aside a{
+    color: #FFFFFF;
+    outline: none;
+    text-decoration: none;
+    padding: 5px 1px;
+}
+aside li{
+    padding: 5px 17px 0;
+}
 aside ul li:hover, aside ul li a:hover{
-    color: #35A745;
-    background-color: #0D6EFD;
+    color: #0D6EFD;
     border-radius:3px;
-    transform: scale(0.975);
+    transform: scale(1.025);
     transition: 0.15s;
 }
 
-body .content{
+body .single_news{
+    margin-top:15px;
     float: left;
-    color: black;
-    margin-top: 25px;
-    text-align: center;
-    width: 75%;
+    width: 90%;
 }
 
 .alert-info{
@@ -59,5 +70,32 @@ body .content{
     text-align:center;
 }
 
+.link-active {
+  color: #0D6EFD;
+}
 
+.d-lg-block{
+    float: inline-start;
+    white-space:nowrap;
+    border-right: none;
+    overflow-x:auto;
+}
+.menu-icon{
+    float: inline-start;
+    padding: 5px 10px 0 0;
+    border-right: 5px;
+}
+
+/* Если размер экрана >=1340px то текст не переносится по словам */
+@media (min-width: 1340px) {
+  .responsive-title {
+    white-space:nowrap;
+  }
+}
+/* Если размер экрана <1340px то текст переносится по словам - тег white-space */
+@media (max-width: 1339.98px) {
+   .responsive-title{
+    white-space:normal;
+  }
+}
 // подробнее про hover-эффекты: https://www.w3schools.com/cssref/sel_hover.php

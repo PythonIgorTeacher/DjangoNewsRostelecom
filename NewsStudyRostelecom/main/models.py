@@ -11,6 +11,7 @@ class News:
         return f'{self.title}: {self.text}, {self.date}'
 
 
+
 class Product:
     counter = 0
     def __init__(self,title,price,quantity):

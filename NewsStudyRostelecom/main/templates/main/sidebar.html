@@ -13,46 +13,54 @@
 
 
 <!--Сделано на основе примеров боковых меню с этой страницы: https://getbootstrap.com/docs/5.0/examples/sidebars/#-->
-<aside>
-<!--    <div class="col-3">  &lt;!&ndash;ширина 3 столбца из 12. высота указана в следующей строке: 100% высоты экрана &ndash;&gt;-->
-        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
+
+
+    <aside>
+
         <!--    Подробнее про flex-классы: https://bootstrap-4.ru/docs/4.0/utilities/flex/-->
+<!--            d-none d-lg-block | Такой класс позвоялет спрятать элементы при отображении на экранах размером меньше lg-->
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-              <img class="bi me-2" src="{% static 'main' %}/img/News_icon.png" width="40" height="50">
-              <span class="fs-4">Новости нашего города</span>
+              <img  src="{% static 'main' %}/img/News_icon.png" width="40" height="50">
+              <span class="fs-5 d-none d-lg-block responsive-title">Новости нашего города</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-        <!--          активная страница-->
-                <a href="/" class="nav-link active" aria-current="page">
-                    <i class="fa fa-house"></i>  Главная
+                  <a href="/" {% if request.path  == '/' %} class="link-active" aria-current="page" {% endif %}>
+                      <i class="fa fa-house menu-icon {% if request.path  == '/' %} link-active {% endif %}" ></i>
+                      <div class="d-none d-lg-block">Главная</div>
+                  </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="/news/" {% if request.path  == '/news/' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-bars menu-icon"></i> <div class="d-none d-lg-block">Все новости</div>
                 </a>
               </li>
-              <li>
-                <a href="#" class="nav-link text-white">
-                    <i class="fa fa-bars"></i>   Все новости
-                </a>
+                <li class="nav-item">
+                  <a href="/examples/" {% if request.path  == '/examples/' %} class="link-active" aria-current="page" {% endif %}>
+                        <i class="fa fa-hand menu-icon"></i>  <div class="d-none d-lg-block"> Примеры с урока</div>
+                    </a>
               </li>
             <li>
-                <a href="home/" class="nav-link text-white">
-                    <i class="fa fa-backward"></i>   Адаптированный шаблон магазина
+                <a href="/home/" {% if request.path  == '/home/' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-backward menu-icon""></i>  <div class="d-none d-lg-block">Адаптированный шаблон </div>
                 </a>
               </li>
               <li>
-                <a href="#" class="nav-link text-white">
-                    <i class="fa fa-magnifying-glass"></i>    Поиск
+                <a href="#" {% if request.path  == '/search/' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-magnifying-glass menu-icon"></i>   <div class="d-none d-lg-block"> Поиск</div>
 
                 </a>
               </li>
               <li>
-                <a href="#" class="nav-link text-white">
-                    <i class="fa fa-pen-nib"></i>   Мои статьи
+                <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-pen-nib menu-icon"></i>  <div class="d-none d-lg-block"> Мои статьи</div>
                 </a>
               </li>
               <li>
-                <a href="#" class="nav-link text-white">
-                  <i class="fa fa-handshake"></i>   О сайте
+                <a href="#" {% if request.path  == '/about/' %} class="link-active" aria-current="page" {% endif %}>
+                  <i class="fa fa-handshake menu-icon"></i>  <div class="d-none d-lg-block"> О сайте</div>
                 </a>
               </li>
             </ul>
@@ -62,7 +70,7 @@
             <div class="dropdown" >
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="background:#212529;">
                 <img src="{% static 'main' %}/img/default.jpg" alt="" width="25" height="25" class="rounded-circle me-2">
-                <strong>Демо-пользователь</strong>
+                  <div class="d-none d-lg-block">Демо-пользователь</div>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item" href="#"> Создать статью</a></li>
@@ -72,8 +80,4 @@
               </ul>
             </div>
 
-
-      </div>
-
-
-</aside>
+    </aside>

@@ -3,7 +3,13 @@ from django.http import HttpResponse
 # Create your views here.
 from .models import News, Product
 
+
 def index(request):
+    return render(request,'main/index.html')
+def news(request):
+    return render(request,'main/news.html')
+
+def examples(request):
     # value = -10
     # n1 = News('Новость 1','Текст 1','07.11.23')
     # n2 = News('Новость 2','Текст 2','01.11.23')
@@ -17,6 +23,7 @@ def index(request):
     #            'value':value,
     #            }
     # context['пример']= 'Example'
+
     if request.method == 'POST':
         print('Получили post-Запрос!')
         print(request.POST)
@@ -36,7 +43,7 @@ def index(request):
         'water': water,
         'chocolate':chocolate,
     }
-    return render(request,'main/index.html', context)
+    return render(request,'main/examples.html', context)
 
 def get_demo(request,a,operation,b):
     match operation:

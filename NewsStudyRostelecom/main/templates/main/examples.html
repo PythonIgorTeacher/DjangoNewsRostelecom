@@ -1,0 +1,102 @@
+{% extends 'main/base_template.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block title %} Главная страница {% endblock %}
+
+{% block content %}
+        <div class="row">
+            <div class="text-center" style="margin-top:30px;">
+                    <h1 >Примеры с урока</h1>
+            </div>
+
+            <div class="single_news"> <!-- контент страницы -->
+        <!--        <h1>{{ Header1 }} </h1>-->
+        <!--        <p> value = {{ value|default:"Нет данных"}}</p>-->
+        <!--        {% if value > 0 %}-->
+        <!--            <h3> Переменная больше нуля</h3>-->
+        <!--        {% else %}-->
+        <!--            <h3> Переменная не больше нуля</h3>-->
+        <!--        {% endif %}-->
+        <!--        <li>-->
+        <!--        {% for n in numbers %}-->
+        <!--            <ul>{{ n.title|lower }}, {{ n.date }}</ul>-->
+        <!--        {% endfor %}-->
+        <!--        </li>-->
+        <!--        <a href="about/"> Ссылка</a>-->
+
+            <!--    dictionary имя словаря-->
+        <!--        <ul>-->
+        <!--            {% for key,value in dictionary.items %}-->
+        <!--                <li> {{ key }} - {{ value }}</li>-->
+        <!--            {% endfor %}-->
+        <!--        </ul>-->
+
+            <!--    <table border="1">-->
+            <!--        <th> Ячейка заголовка</th>-->
+            <!--        <tr>-->
+            <!--           <td> Текст ячейки 1</td>-->
+            <!--        </tr>-->
+            <!--    </table>-->
+        <!--        <form method="post">-->
+        <!--            {% csrf_token %}-->
+        <!--            <h3> Выберите цвет:</h3>-->
+        <!--            {% for color in colors %}-->
+        <!--                <input type="radio" id="{{ color }}" name="colors" value="{{ forloop.counter }}">-->
+        <!--                <label for="{{ color }}"> {{ color }}</label> <br>-->
+        <!--            {% endfor %}-->
+        <!--            <br>-->
+        <!--            <input class="btn-primary" type="submit" value="Сохранить">-->
+        <!--        </form>-->
+                <form method="post">
+                    {% csrf_token %}
+                    <p> Введите название товара: <br>
+                    <input type="text" name="title"></p>
+                    <p> Введите цену: <br>
+                    <input type="text" name="price"></p>
+                    <p> Выберите количество: <br>
+                    <input type="number" name="quantity" min="1" max="100"></p>
+                    <br>
+                    <input class="btn-primary" type="submit" value="Создать товар">
+                </form>
+
+                <div class="container">
+                    <div class="row">
+                    <table width="500px;" border="1px;">
+                    <tr>
+                        <th> Товар </th>
+                        <th> Цена</th>
+                        <th> Кол-во</th>
+                        <th> Итого</th>
+                    </tr>
+                    <tr>
+                        <td> {{ water.title }} </td>
+                        <td> {{ water.price }}</td>
+                        <td> {{ water.quantity }}</td>
+                        <td> {{ water.amount }}</td>
+                    </tr>
+                    <tr>
+                        <td> {{ chocolate.title }} </td>
+                        <td> {{ chocolate.price }}</td>
+                        <td> {{ chocolate.quantity }}</td>
+                        <td> {{ chocolate.amount }}</td>
+                    </tr>
+
+                </table>
+                    </div>
+                    <div class="row">
+                        <div class="col col-sm-5">
+                         <h1>контейнер 1</h1>
+                              <h2> Новость 2 </h2>
+                              <p> Текст новости</p>
+                        </div>
+                        <div class="col col-sm-5">
+                         <h1>контейнер 2</h1>
+                              <h2> Новость 2 </h2>
+                              <p> Текст новости</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+

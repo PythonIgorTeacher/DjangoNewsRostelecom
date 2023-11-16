@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from .forms import DemoForm, Demo
 
 def index(request):
-    return render(request,'general.html')
+    return render(request,'home/index.html')
+
+
 
 def demoform(request):
     form = DemoForm()
