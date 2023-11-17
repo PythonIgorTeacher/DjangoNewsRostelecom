@@ -26,14 +26,14 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                  <a href="/" {% if request.path  == '/' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="{% url 'home' %}" {% if request.path == '/' %} class="link-active" aria-current="page" {% endif %}>
                       <i class="fa fa-house menu-icon {% if request.path  == '/' %} link-active {% endif %}" ></i>
                       <div class="d-none d-lg-block">Главная</div>
                   </a>
               </li>
 
               <li class="nav-item">
-                <a href="/news/" {% if request.path  == '/news/' %} class="link-active" aria-current="page" {% endif %}>
+                <a href="{% url 'news_index' %}" {% if request.resolver_match.view_name == 'news_index' %} class="link-active" aria-current="page" {% endif %}>
                     <i class="fa fa-bars menu-icon"></i> <div class="d-none d-lg-block">Все новости</div>
                 </a>
               </li>
