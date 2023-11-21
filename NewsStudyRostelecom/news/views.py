@@ -5,7 +5,22 @@ from .models import *
 #     return render(request,'news/news.html')
 
 def index(request):
-    article = Article.objects.all().first()
+    # print(request.user.id)
+    # # articles = Article.objects.filter(author=request.user.id)
+    # print(articles)
+    article = Article.objects.filter(author=request.user)
+    # for t in article.tags.all():
+    #     print(t.title)
+    user_list = User.objects.all()
+    for user in user_list:
+        print(Article.objects.filter(author=user))
+    print(user_list)
+    print('!!!!!!!!!!!!!!!!!!!!!!!!Результаты',article)
+    # print(article.tags.all())
+    # tag = Tag.objects.filter(title='IT')[0]
+    # tagged_news = Article.objects.filter(tags=tag)
+    # print(tagged_news)
+
     context = {'article':article}
     return render(request,'news/index.html',context)
 
