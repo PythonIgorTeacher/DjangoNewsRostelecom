@@ -60,7 +60,11 @@ body .single_news{
     float: left;
     width: 90%;
 }
-
+.content_center{
+    margin-top:15px;
+    float: left;
+    width: 90%;
+}
 .alert-info{
     float:left;
     clear:both;

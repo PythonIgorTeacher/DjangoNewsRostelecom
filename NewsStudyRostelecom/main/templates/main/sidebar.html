@@ -25,6 +25,16 @@
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
+              {% if request.user.is_superuser %}
+                  <li class="nav-item">
+
+                      <a href="/admin/">
+                          <i class="fa fa-user menu-icon {% if request.path  == '/admin/' %} link-active {% endif %}" ></i>
+                          <div class="d-none d-lg-block">Админка</div>
+                      </a>
+
+                  </li>
+              {% endif %}
               <li class="nav-item">
                   <a href="{% url 'home' %}" {% if request.path == '/' %} class="link-active" aria-current="page" {% endif %}>
                       <i class="fa fa-house menu-icon {% if request.path  == '/' %} link-active {% endif %}" ></i>

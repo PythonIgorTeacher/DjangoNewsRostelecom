@@ -5,34 +5,21 @@ from .models import *
 #     return render(request,'news/news.html')
 
 def index(request):
-    # print(request.user.id)
-    # # articles = Article.objects.filter(author=request.user.id)
-    # print(articles)
-    article = Article.objects.filter(author=request.user)
-    # for t in article.tags.all():
-    #     print(t.title)
-    user_list = User.objects.all()
-    for user in user_list:
-        print(Article.objects.filter(author=user))
-    print(user_list)
-    print('!!!!!!!!!!!!!!!!!!!!!!!!Результаты',article)
-    # print(article.tags.all())
-    # tag = Tag.objects.filter(title='IT')[0]
-    # tagged_news = Article.objects.filter(tags=tag)
-    # print(tagged_news)
+    author_list = User.objects.all()
+    selected = 0
+    if request.method=="POST":
+        selected = int(request.POST.get('author_filter'))
+        if  selected == 0:
+            articles = Article.objects.all()
 
-    context = {'article':article}
-    return render(request,'news/index.html',context)
+        else:
+            articles = Article.objects.filter(author=selected)
+    else:
+        articles = Article.objects.all()
+    context = {'articles':articles, 'author_list':author_list,'selected':selected }
+    return render(request,'news/news_list.html',context)
 
 def detail(request,id):
-    # article = Article.objects.filter(id=id)[0]
-    # print(article,type(article))
-    #пример создания новости
-    # author = User.objects.get(id=request.user.id)
-    # article = Article(author=author,title='Заголовок1',
-    #                   anouncement='Анонс', text='текст')
-    # article.save()
-
     #пример итерирования по объектам QuerySet
     articles = Article.objects.all()
     s=''
