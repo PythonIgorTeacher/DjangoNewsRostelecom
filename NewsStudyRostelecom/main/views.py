@@ -2,10 +2,48 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
 from .models import News, Product
-
-
+from django.db import connection, reset_queries
+from news.models import Article
 def index(request):
+    # Примеры Values values_list
+    # all_news = Article.objects.all().values('author','title')
+    # for a in all_news:
+    #     print(a['author'], a['title'])
+    # all_news = Article.objects.all().values_list('title', flat=True)
+    # print(all_news)
+    # all_news = Article.objects.all().values_list('title')
+    # print(all_news)
+    # for a in all_news:
+    #     print(a)
+    # #по-старому
+    # article = Article.objects.get(id=1)
+    # print(article.author.username)
+    # #Select_related O2O, O2M:
+    # article = Article.objects.select_related('author').get(id=1)
+    # print(article.author.username)
+    #prefertch_related M2M
+    # articles = Article.objects.all()
+    # for a in articles:
+    #     print(a.title, a.tags.all())
+    # articles = Article.objects.prefetch_related('tags').all()
+    from django.db.models import Count, Avg, Max
+    from django.contrib.auth.models import User
+    # #пример аннотирования и агрегации:
+    # count_articles = User.objects.annotate(Count('article',distinct=True))
+    # print(count_articles)
+    # for user in count_articles:
+    #     print(user, user.article__count)
+    # пример аннотирования и агрегации:
+    # count_articles = User.objects.annotate(Count('article', distinct=True)).aggregate(Avg('article__count'))
+    # print(count_articles)
+    # пример аннотирования и агрегации:
+    max_article_count_user = User.objects.annotate(Count('article', distinct=True)).order_by('-article__count').first()
+    print(max_article_count_user)
+    max_article_count =  User.objects.annotate(Count('article', distinct=True)).aggregate(Max('article__count'))
+    max_article_count_user2 = User.objects.annotate(Count('article', distinct=True)).filter(article__count__exact=max_article_count['article__count__max'])
+    print(max_article_count_user2)
     return render(request,'main/index.html')
+
 def news(request):
     return render(request,'main/news.html')
 

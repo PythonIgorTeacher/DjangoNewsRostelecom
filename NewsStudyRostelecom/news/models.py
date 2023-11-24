@@ -12,7 +12,10 @@ class Tag(models.Model):
         verbose_name= 'Тэг'
         verbose_name_plural='Тэги'
 
-
+import datetime
+class PublishedToday(models.Manager):
+    def get_queryset(self):
+        return super(PublishedToday,self).get_queryset().filter(date__gte=datetime.date.today())
 
 class Article(models.Model):
     categories = (('E','Economics'),
@@ -26,7 +29,8 @@ class Article(models.Model):
     date = models.DateTimeField('Дата публикации',auto_now=True)
     category = models.CharField(choices=categories, max_length=20,verbose_name='Категории')
     tags = models.ManyToManyField(to=Tag, blank=True)
-
+    objects = models.Manager()
+    published = PublishedToday()
     #методы моделей
     def __str__(self):
         return f'{self.title} от: {str(self.date)[:16]}'
