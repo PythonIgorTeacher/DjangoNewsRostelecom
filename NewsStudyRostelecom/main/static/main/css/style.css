@@ -55,10 +55,14 @@ aside ul li:hover, aside ul li a:hover{
     transition: 0.15s;
 }
 
+
 body .single_news{
     margin-top:15px;
     float: left;
     width: 90%;
+}
+.contact_form{
+    margin: 10px 20%;
 }
 .content_center{
     margin-top:15px;

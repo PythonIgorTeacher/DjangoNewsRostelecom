@@ -34,6 +34,8 @@
                                   <p class="lead my-3">{{ article.anouncement }}</p>
                                   <p class="lead my-3">Автор: {{ article.author }}</p>
                                   <p class="lead mb-0"><a href="/news/{{ article.pk }}/" class="text-white fw-bold">Полный текст...</a></p>
+                                  <p class="lead my-3">Теги: {% for t in article.tags.all %} {{ t.title }} {% endfor %}</p>
+
                                 </div>
                         </div>
                     </div>
