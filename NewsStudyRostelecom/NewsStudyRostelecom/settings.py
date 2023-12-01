@@ -133,7 +133,14 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     "home/static/",
 ]
-
+# Полный сброс миграции таблиц
+# python manage.py migrate --fake-initial
+#python manage.py flush - полный сброс базы включая суперпользователей
+'''
+Сброс миграции отдельной таблицы
+python manage.py migrate --fake MyApp zero
+python manage.py makemigrations
+'''
 import os
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
