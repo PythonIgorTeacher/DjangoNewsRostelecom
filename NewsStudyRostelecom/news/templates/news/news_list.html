@@ -24,6 +24,21 @@
                                  </span>
                             </div>
                         </form>
+                        <br>
+                         <form method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                 <select class="form-select" name="category_filter" style="width:40%">
+                                      <option value="0">Все категории</option>
+                                      {% for c in categories %}
+                                          <option value="{{ c.0 }}" {% if selected == category. %} selected {% endif %}> {{ c.1 }}</option>
+                                      {% endfor %}
+                                 </select>
+                                 <span class="input-group-btn">
+                                     <input type="submit" class="btn btn-success" value="Применить" style="margin: 0 15px">
+                                 </span>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 {% for article in articles %}
@@ -32,8 +47,9 @@
                                 <div class="col-md-6 px-0">
                                   <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
                                   <p class="lead my-3">{{ article.anouncement }}</p>
+
                                   <p class="lead my-3">Автор: {{ article.author }}</p>
-                                  <p class="lead mb-0"><a href="/news/{{ article.pk }}/" class="text-white fw-bold">Полный текст...</a></p>
+                                  <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-white fw-bold">Полный текст...</a></p>
                                   <p class="lead my-3">Теги: {% for t in article.tags.all %} {{ t.title }} {% endfor %}</p>
 
                                 </div>

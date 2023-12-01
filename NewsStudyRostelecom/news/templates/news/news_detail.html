@@ -1,0 +1,24 @@
+{% extends 'main/base_template.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block title %} Главная страница {% endblock %}
+
+{% block content %}
+        <div class="row">
+                    <div class="single_news">
+                        <div class="p-4 p-md-5 text-white rounded bg-dark" >
+                                <div class="col-md-6 px-0">
+                                  <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
+                                  <p class="lead my-3">{{ article.anouncement }}</p>
+                                  <p class="lead my-3">{{ article.text }}</p>
+                                  <p class="lead my-3">Автор: {{ article.author }}</p>
+                                      <p class="lead my-3">Теги: {% for t in article.tags.all %} {{ t.title }} {% endfor %}</p>
+                                </div>
+                                <a class="btn btn-warning" href="{% url 'news_delete' article.pk %}">Удалить</a>
+                                <a class="btn btn-primary" href="{% url 'news_update' article.pk %}">Редактировать</a>
+                        </div>
+                    </div>
+
+
+        </div>
+{% endblock %}

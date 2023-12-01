@@ -39,3 +39,6 @@ if settings.DEBUG:
     urlpatterns+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header = "Панель администрирования новостей"
+admin.site.index_title = "Новости нашего города"

@@ -16,3 +16,7 @@ class Account(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s account"
+    class Meta:
+        ordering = ['user']
+        verbose_name = 'Профиль'
+        verbose_name_plural ='Профили'
