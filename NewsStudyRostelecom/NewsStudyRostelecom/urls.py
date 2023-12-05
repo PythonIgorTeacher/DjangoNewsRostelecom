@@ -42,3 +42,4 @@ if settings.DEBUG:
 
 admin.site.site_header = "Панель администрирования новостей"
 admin.site.index_title = "Новости нашего города"
+admin.site.index_template = 'main/custom_admin.html'

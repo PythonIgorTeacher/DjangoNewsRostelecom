@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-from .models import News, Product
+
 from django.db import connection, reset_queries
 from news.models import Article
 def index(request):

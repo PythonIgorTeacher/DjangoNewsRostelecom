@@ -1,12 +1,22 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 class Tag(models.Model):
     title = models.CharField(max_length=80)
     status = models.BooleanField(default=True)
     def __str__(self):
         return self.title
+
+    def tag_count(self):
+        count = self.article_set.count()
+        #комментарий: когда мы работаем со связанными объектами (foreign_key, m2m, один к одному),
+        #мы можем обращаться к связанным таблицам при помощи синтаксиса:
+        #связаннаяМодель_set и что-то делать с результатами. В этом примере - мы используем связанные article
+        #и вызываем метод count
+        return count
+
     class Meta:
         ordering = ['title','status']
         verbose_name= 'Тэг'
@@ -48,6 +58,14 @@ class Article(models.Model):
             s+=t.title+' '
         return s
 
+    def image_tag(self):
+        image = Image.objects.filter(article=self)
+        print('!!!!',image)
+        if image:
+            return mark_safe(f'<img src="{image[0].image.url}" height="50px" width="auto" />')
+        else:
+            return '(no image)'
+
     class Meta:
         ordering = ['title','date']
         verbose_name= 'Новость'
@@ -57,7 +75,7 @@ class Article(models.Model):
 class Image(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)
-    image = models.ImageField(upload_to='article_images/')
+    image = models.ImageField(upload_to='article_images/') #лучше добавить поле default !!!
 
     def __str__(self):
         return self.title

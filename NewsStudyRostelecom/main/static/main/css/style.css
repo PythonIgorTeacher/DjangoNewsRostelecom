@@ -106,3 +106,27 @@ body .single_news{
   }
 }
 // подробнее про hover-эффекты: https://www.w3schools.com/cssref/sel_hover.php
+
+
+#header {
+    background: #212529;
+    color: white;
+}
+
+div.breadcrumbs {
+    background: #0D6EFD;
+}
+.module caption{
+background: #0D6EFD;}
+
+.form-group label {
+    float: left;
+    text-align: left;
+    font-weight: normal;
+}
+
+.form-group select {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}

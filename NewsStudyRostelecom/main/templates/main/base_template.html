@@ -14,41 +14,36 @@
 
 </head>
 <body>
-            <div class="row">
-                    <div class="col-4">
-                            <div class="sticky-top">
-                                {% include 'main/sidebar.html' %}
-                            </div>
-                    </div>
 
-
-                    <div class="col-8">
-                        {% block content %}
-                                <div class="row">
-                                    <div class="text-center" style="margin-top:30px;">
-                                            <h1 >Главная страница</h1>
-                                    </div>
-
-                                <div class="single_news">
-                                    <div class="p-4 p-md-5 text-white rounded bg-dark" >
-                                        <div class="col-md-6 px-0">
-                                          <h1 class="display-4 fst-italic">Последняя новость</h1>
-                                          <p class="lead my-3">Начало новости, для продолжения чтения нужно пройти по ссылки ниже</p>
-                                          <p class="lead mb-0"><a href="#" class="text-white fw-bold">Полный текст...</a></p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                </div>
-                        {% endblock %}
-                    </div>
-
+<div class="row">
+    <div class="col-4">
+        <div class="sticky-top">
+            {% include 'main/sidebar.html' %}
+        </div>
+    </div>
+    <div class="col-8">
+    {% block content %}
+        <div class="row">
+            <div class="text-center" style="margin-top:30px;">
+                <h1>Главная страница</h1>
             </div>
-            <div class="row">
-                {% block foot %}
-                {% endblock %}
+            <div class="single_news">
+                <div class="p-4 p-md-5 text-white rounded bg-dark">
+                    <div class="col-md-6 px-0">
+                        <h1 class="display-4 fst-italic">Последняя новость</h1>
+                        <p class="lead my-3">Начало новости, для продолжения чтения нужно пройти по ссылки ниже</p>
+                        <p class="lead mb-0"><a href="#" class="text-white fw-bold">Полный текст...</a></p>
+                    </div>
+                </div>
             </div>
-
-
+        </div>
+    {% endblock %}
+    </div>
+</div>
+<div class="row">
+    {% block foot %}
+    {% endblock %}
+</div>
 
 
 </body>
