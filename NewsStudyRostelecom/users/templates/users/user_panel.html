@@ -21,12 +21,12 @@
 <!--            d-none d-lg-block | Такой класс позвоялет спрятать элементы при отображении на экранах размером меньше lg-->
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
               <img  src="{% static 'main' %}/img/News_icon.png" width="40" height="50">
-              <span class="fs-5 d-none d-lg-block responsive-title">Новости нашего города</span>
+              <span class="fs-5 d-none d-lg-block responsive-title">Панель пользователя</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
-                  <a href="/admin/" {% if request.path  == '/admin/' %} class="link-active" aria-current="page" {% endif %}>
+                  <a href="/admin/" aria-current="page">
                       <i class="fa fa-user menu-icon {% if request.path  == '/admin/' %} link-active {% endif %}" ></i>
                       <div class="d-none d-lg-block">Админка</div>
                   </a>
@@ -38,35 +38,19 @@
                   </a>
               </li>
 
-              <li class="nav-item">
-                 <a href="{% url 'news' %}" {% if request.resolver_match.view_name  == 'news' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-bars menu-icon"></i> <div class="d-none d-lg-block">Все новости</div>
-                </a>
-              </li>
-                <li class="nav-item">
-                  <a href="/examples/" {% if request.path  == '/examples/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa fa-hand menu-icon"></i>  <div class="d-none d-lg-block"> Примеры с урока</div>
-                    </a>
-              </li>
-            <li>
-                <a href="home/" {% if request.path  == '/home/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-backward menu-icon""></i>  <div class="d-none d-lg-block">Адаптированный шаблон </div>
-                </a>
-              </li>
-              <li>
-                <a href="#" {% if request.path  == '/search/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-magnifying-glass menu-icon"></i>   <div class="d-none d-lg-block"> Поиск</div>
-
+              <li class="nav-item border-top">
+                 <a href="{% url 'profile' %}" {% if request.resolver_match.view_name  == 'news' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-gear menu-icon"></i> <div class="d-none d-lg-block">Мой профиль</div>
                 </a>
               </li>
               <li>
                 <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-pen-nib menu-icon"></i>  <div class="d-none d-lg-block"> Мои статьи</div>
+                    <i class="fa fa-newspaper menu-icon"></i>  <div class="d-none d-lg-block"> Мои статьи</div>
                 </a>
               </li>
               <li>
-                <a href="{% url 'about' %}" {% if request.resolver_match.view_name  == 'about' %} class="link-active" aria-current="page" {% endif %}>
-                  <i class="fa fa-handshake menu-icon"></i>  <div class="d-none d-lg-block"> О сайте</div>
+                <a href="{% url 'logout' %}"  aria-current="page">
+                    <i class="fa fa-water-ladder menu-icon"></i>  <div class="d-none d-lg-block"> Выход из аккаунта</div>
                 </a>
               </li>
             </ul>

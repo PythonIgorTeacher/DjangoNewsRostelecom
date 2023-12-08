@@ -26,7 +26,7 @@
                 <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
                 {% if article.image_set.all %}
                 <div id="carouselControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner" role="listbox" style=" width:auto; height: 300px !important;">
+                    <div class="carousel-inner" role="listbox" style=" width:auto; height: 300px; !important;">
                         {% for image in article.image_set.all %}
                         <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
                             <img class="d-block" src="{{ image.image.url }}"

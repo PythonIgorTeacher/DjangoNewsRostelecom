@@ -28,8 +28,8 @@ class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('news_index') #именованная ссылка или абсолютную
     template_name = 'news/delete_article.html'
-
-@login_required(login_url="/")
+from django.conf import settings
+@login_required(login_url=settings.LOGIN_URL)
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
