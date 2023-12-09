@@ -7,6 +7,24 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 #человек не аутентифицирован - отправляем на страницу другую
 
+import json
+#URL:    path('search_auto/', views.search_auto, name='search_auto'),
+def search_auto(request):
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        q = request.GET.get('term','')
+        articles = Article.objects.filter(title__icontains=q)
+        results =[]
+        for a in articles:
+            results.append(a.title)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data,mimetype)
+
+
+
+
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'news/news_detail.html'
@@ -22,7 +40,7 @@ class ArticleDetailView(DetailView):
 class ArticleUpdateView(UpdateView):
     model = Article
     template_name = 'news/create_article.html'
-    fields = ['title','anouncement','text','tags']
+    fields = ['title','anouncement','text','tags','']
 
 class ArticleDeleteView(DeleteView):
     model = Article

@@ -88,7 +88,7 @@
             {% else %} <!-- ссылки на регистрацию и аутентификацию-->
                 <ul class="nav nav-pills flex-column mb-auto">
                       <li class="nav-item">
-                          <a href="{% url 'registration_page' %}" {% if request.resolver_match.view_name  == 'registration_page' %} class="link-active" aria-current="page" {% endif %}>
+                          <a href="{% url 'registration' %}" {% if request.resolver_match.view_name  == 'registration' %} class="link-active" aria-current="page" {% endif %}>
                               <i class="fa fa-user menu-icon"></i>
                               <div class="d-none d-lg-block">Регистрация</div>
                           </a>

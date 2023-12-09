@@ -4,8 +4,38 @@
 {% block title %} Главная страница {% endblock %}
 
 {% block content %}
+<!-- jQuery !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script>
+  $(function() {
+    $("#search_input").autocomplete({
+      source: "search_auto/",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
+
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+</script>
+
 
 <div class="content_center">
+    <div class="row">
+        <div class="search">
+            <label for="search_input">Поиск: </label>
+            <input id="search_input">
+            <button class="btn btn-primary"> Найти</button>
+        </div>
+    </div>
+
     <div class="row">
         <label><h1> Фильтры: (Всего :{{ articles|length }} результатов) </h1>
             <form method="post">
