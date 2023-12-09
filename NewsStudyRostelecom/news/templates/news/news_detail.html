@@ -56,3 +56,17 @@
     </div>
 </div>
 {% endblock %}
+
+
+{% for n in articles %}
+            {% if n.image_set.all %}
+            <li>
+                <a href="{{ n.get_absolute_url }}">
+                  {% for image in n.image_set.all %}
+                    <img src="{{ n.image.image.url }}" style="margin:auto; height:350px; width:auto;" alt=""
+                         title="{{ n.title }}"/>
+                 {% endfor %}
+                </a>
+            </li>
+            {% endif %}
+{% endfor %}
