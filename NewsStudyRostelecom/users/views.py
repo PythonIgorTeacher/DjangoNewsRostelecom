@@ -4,7 +4,7 @@ from .forms import *
 
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
 
 def profile(request):
@@ -80,8 +80,11 @@ def registration(request):
             account = Account.objects.create(user=user,nickname=user.username)
 
             #!!!не аутентифицируется - нужно доделать
-            authenticate(username=username,password=password)
+            #from django.contrib.auth import authenticate, login
+            user= authenticate(username=username,password=password)
+            login(request,user)
             messages.success(request,f'{username} был зарегистрирован!')
+
             return redirect('home')
     else:
         form = UserCreationForm()
