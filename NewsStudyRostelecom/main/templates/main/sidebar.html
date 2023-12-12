@@ -2,6 +2,7 @@
 {% load static %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% load users_extras %}
 <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 <script src="https://kit.fontawesome.com/a97047fead.js" crossorigin="anonymous"></script>
 <meta charset="utf-8">
@@ -59,11 +60,19 @@
 
                 </a>
               </li>
+              {% if request.user|has_group:"Authors" %}
               <li>
                 <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
                     <i class="fa fa-pen-nib menu-icon"></i>  <div class="d-none d-lg-block"> Мои статьи</div>
                 </a>
               </li>
+              {% endif %}
+               <li>
+                <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-newspaper menu-icon"></i>  <div class="d-none d-lg-block"> Избранное</div>
+                </a>
+              </li>
+
               <li>
                 <a href="{% url 'about' %}" {% if request.resolver_match.view_name  == 'about' %} class="link-active" aria-current="page" {% endif %}>
                   <i class="fa fa-handshake menu-icon"></i>  <div class="d-none d-lg-block"> О сайте</div>

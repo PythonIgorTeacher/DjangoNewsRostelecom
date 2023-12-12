@@ -7,6 +7,16 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 #человек не аутентифицирован - отправляем на страницу другую
 
+from django.core.paginator import Paginator
+def pagination(request):
+    articles = Article.objects.all()
+    p = Paginator(articles,2)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    print(page_obj)
+    context = {'articles': page_obj}
+    return render(request,'news/news_list.html',context)
+
 import json
 #URL:    path('search_auto/', views.search_auto, name='search_auto'),
 def search_auto(request):
@@ -24,8 +34,8 @@ def search_auto(request):
 
 
 
-
-class ArticleDetailView(DetailView):
+from .utils import ViewCountMixin
+class ArticleDetailView(ViewCountMixin, DetailView):
     model = Article
     template_name = 'news/news_detail.html'
     context_object_name = 'article'
@@ -86,8 +96,12 @@ class ArticleDeleteView(DeleteView):
     model = Article
     success_url = reverse_lazy('news_index') #именованная ссылка или абсолютную
     template_name = 'news/delete_article.html'
+
+from users.utils import check_group #импортировли декоратор
+
 from django.conf import settings
 @login_required(login_url=settings.LOGIN_URL)
+@check_group('Authors') #пример использования декоратора
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)

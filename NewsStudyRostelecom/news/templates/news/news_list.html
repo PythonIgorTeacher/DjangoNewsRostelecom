@@ -60,7 +60,26 @@
             </form>
         </label>
     </div>
-
+        <br>
+    <div class="row">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              {% if articles.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ news.previous_page_number }}">Previous</a></li>
+              {% endif %}
+              {% for p in articles.paginator.page_range %}
+                {% if articles.number == p %}
+                    <li class="page-item"><p class="page-link" style="color:black;"> {{ p }}</p></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ p }}"> {{ p }}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% if articles.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ news.next_page_number }}">Next</a></li>
+              {% endif %}
+          </ul>
+        </nav>
+    </div>
 
     <div class="row">
         {% for article in articles %}
@@ -70,9 +89,9 @@
                     <div class="col-md-{% if article.image_set.all %}6{% else %}12 {% endif %} px-0">
                         <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
                         <p class="lead my-3">{{ article.anouncement }}</p>
-                        <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-white fw-bold">Полный текст...
-                        </a>
-                        </p>
+                        <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}" class="text-white fw-bold">Полный текст..</a></p>
+                        <p><small>Просмотры: {{ article.get_views }}</small></p>
+                        <a class="btn btn-success" href="{% url 'favorites' article.pk %}"><i class="fa fa-bookmark">В избранное</i></a>
                     </div>
                     {% if article.image_set.all %}
                     <div class="col-md-6 px-0">

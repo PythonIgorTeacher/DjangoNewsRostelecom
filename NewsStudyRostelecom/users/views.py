@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponseRedirect, redirect, HttpResponse
 from .models import *
 from .forms import *
 
@@ -12,6 +12,23 @@ def profile(request):
     return render(request,'users/profile.html',context)
 
 from .forms import AccountUpdateForm, UserUpdateForm
+
+from django.contrib.auth.decorators import login_required
+from news.models import Article
+@login_required
+def add_to_favorites(request, id):
+    article = Article.objects.get(id=id)
+    #проверям есть ли такая закладка с этой новостью
+    bookmark = FavoriteArticle.objects.filter(user=request.user.id,
+                                              article=article)
+    if bookmark.exists():
+        bookmark.delete()
+        messages.warning(request,f"Новость {article.title} удалена из закладок")
+    else:
+        bookmark = FavoriteArticle.objects.create(user=request.user, article=article)
+        messages.success(request,f"Новость {article.title} добавлена в закладки")
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 def profile_update(request):
     user = request.user
     account = Account.objects.get(user=user)
@@ -19,10 +36,12 @@ def profile_update(request):
         user_form = UserUpdateForm(request.POST, instance=user)
         account_form = AccountUpdateForm(request.POST, request.FILES, instance=account)
         if user_form.is_valid() and account_form.is_valid():
-            user_form.save()w
+            user_form.save()
             account_form.save()
             messages.success(request,"Профиль успешно обновлен")
             return redirect('profile')
+        else:
+            pass
     else:
         context = {'account_form':AccountUpdateForm(instance=account),
                    'user_form':UserUpdateForm(instance=user)}
@@ -49,11 +68,16 @@ def registration(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save() #появляется новый пользователь
-            group = Group.objects.get(name='Authors')
-            user.groups.add(group)
-
+            category = request.POST['account_type']
+            if category == 'author':
+                group = Group.objects.get(name='Actions Required')
+                user.groups.add(group)
+            else:
+                group = Group.objects.get(name='Reader')
+                user.groups.add(group)
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            account = Account.objects.create(user=user,nickname=user.username)
 
             #!!!не аутентифицируется - нужно доделать
             authenticate(username=username,password=password)
