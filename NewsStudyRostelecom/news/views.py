@@ -7,19 +7,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 #человек не аутентифицирован - отправляем на страницу другую
 
-from django.core.paginator import Paginator
-def pagination(request):
-    articles = Article.objects.all()
-    p = Paginator(articles,2)
-    page_number = request.GET.get('page')
-    page_obj = p.get_page(page_number)
-    print(page_obj)
-    context = {'articles': page_obj}
-    return render(request,'news/news_list.html',context)
 
 import json
 #URL:    path('search_auto/', views.search_auto, name='search_auto'),
 def search_auto(request):
+    print('Случился запрос!')
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         q = request.GET.get('term','')
         articles = Article.objects.filter(title__icontains=q)
@@ -120,9 +112,12 @@ def create_article(request):
     return render(request,'news/create_article.html', {'form':form })
 
 from time import time
+
+from django.core.paginator import Paginator
+# def pagination(request):
+#     articles = Article.objects.all()
+
 def index(request):
-    t = time()
-    print(t)
     categories = Article.categories #создали перечень категорий
     author_list = User.objects.all() #создали перечень авторов
     if request.method == "POST":
@@ -138,10 +133,14 @@ def index(request):
         selected_author = 0
         selected_category = 0
         articles = Article.objects.all()
-
-    context = {'articles': articles, 'author_list':author_list, 'selected_author':selected_author,
-               'categories':categories,'selected_category': selected_category}
+    total = len(articles)
+    p = Paginator(articles,2)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj, 'author_list':author_list, 'selected_author':selected_author,
+               'categories':categories,'selected_category': selected_category, 'total':total,}
 
     return render(request,'news/news_list.html',context)
+
 
 

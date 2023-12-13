@@ -11,7 +11,28 @@
 <!--скрипты ниже для работы выпадающего меню пользователя-->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+<!-- jQuery !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
+<!-- jQuery UI !-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
+<script>
+  $(function() {
+    $("#search_input").autocomplete({
+      source: "{% url 'search_auto' %}",
+      select: function (event, ui) { //item selected
+        AutoCompleteSelectHandler(event, ui)
+      },
+      minLength: 2,
+    });
+  });
+
+  function AutoCompleteSelectHandler(event, ui)
+  {
+    var selectedObj = ui.item;
+  }
+</script>
 
 <!--Сделано на основе примеров боковых меню с этой страницы: https://getbootstrap.com/docs/5.0/examples/sidebars/#-->
 
@@ -54,12 +75,13 @@
                     <i class="fa fa-backward menu-icon""></i>  <div class="d-none d-lg-block">Адаптированный шаблон </div>
                 </a>
               </li>
-              <li>
-                <a href="#" {% if request.path  == '/search/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-magnifying-glass menu-icon"></i>   <div class="d-none d-lg-block"> Поиск</div>
+                <div class="row">
+                    <div class="search">
+                        <input id="search_input">
+                        <button class="btn btn-primary">🔍︎</button>
+                    </div>
+                </div>
 
-                </a>
-              </li>
               {% if request.user|has_group:"Authors" %}
               <li>
                 <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>

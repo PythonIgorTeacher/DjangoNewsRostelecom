@@ -44,7 +44,7 @@
                 </a>
               </li>
               <li>
-                <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
+                <a href="{% url 'my_news_list' %}" {% if request.resolver_match.view_name  == 'my_news_list' %} class="link-active" aria-current="page" {% endif %}>
                     <i class="fa fa-newspaper menu-icon"></i>  <div class="d-none d-lg-block"> Мои статьи</div>
                 </a>
               </li>

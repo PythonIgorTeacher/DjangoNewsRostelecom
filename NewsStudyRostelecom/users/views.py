@@ -7,6 +7,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import Group
 
+
+
+
 def profile(request):
     context = dict()
     return render(request,'users/profile.html',context)
@@ -81,7 +84,7 @@ def registration(request):
 
             #!!!не аутентифицируется - нужно доделать
             #from django.contrib.auth import authenticate, login
-            user= authenticate(username=username,password=password)
+            user = authenticate(username=username,password=password)
             login(request,user)
             messages.success(request,f'{username} был зарегистрирован!')
 
@@ -111,3 +114,24 @@ def index(request):
     user_acc = Account.objects.get(user=request.user)
     print(user_acc.birthdate,user_acc.gender)
     return HttpResponse('Приложение Users')
+
+
+from django.core.paginator import Paginator
+def my_news_list(request):
+    categories = Article.categories #создали перечень категорий
+    author = User.objects.get(id=request.user.id) #создали перечень авторов
+    articles = Article.objects.filter(author=author)
+    if request.method == "POST":
+        selected_category = int(request.POST.get('category_filter'))
+        if selected_category != 0: #фильтруем найденные результаты по категориям
+            articles = articles.filter(category__icontains=categories[selected_category-1][0])
+    else: #если страница открывется впервые
+        selected_category = 0
+    total = len(articles)
+    p = Paginator(articles,2)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj, 'total':total,
+               'categories':categories,'selected_category': selected_category}
+
+    return render(request,'users/my_news_list.html',context)

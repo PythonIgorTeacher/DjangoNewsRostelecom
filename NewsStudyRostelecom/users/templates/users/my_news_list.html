@@ -1,38 +1,32 @@
 {% extends 'main/base_template.html' %}
 {% load static %}
 {% load bootstrap5 %}
-{% block title %} Главная страница {% endblock %}
+{% block title %} Мои статьи {% endblock %}
+{% block sidebar %} {% include 'users/user_panel.html' %} {% endblock %}
 
 {% block content %}
 
-
 <div class="content_center">
+    {% if articles|length  != 0 %}
     <div class="row">
         <label><h1> Фильтры: (Всего :{{ total }} результатов) </h1>
             <form method="post">
                 {% csrf_token %}
-                        <div class="form-group col-11">
-                            <select class="form-select" name="author_filter" style="width:40%">
-                                <option value="0">Все авторы</option>
-                                {% for author in author_list %}
-                                <option value="{{ author.id }}" {% if selected_author == author.id %} selected {% endif %}> {{ author.username }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                            <select class="form-select" name="category_filter" style="width:40%">
-                                <option value="0">Все категории</option>
-                                {% for c in categories %}
-                                <option value="{{ forloop.counter }}" {% if selected_category == forloop.counter %} selected {% endif %}> {{ c.1 }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                            <input type="submit" class="btn btn-success" value="Применить">
-                        </div>
+                <div class="form-group col-11">
+                    <select class="form-select" name="category_filter" style="width:40%">
+                        <option value="0">Все категории</option>
+                        {% for c in categories %}
+                        <option value="{{ forloop.counter }}" {% if selected_category == forloop.counter %} selected {% endif %}> {{ c.1 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="btn btn-success" value="Применить">
+                </div>
             </form>
         </label>
     </div>
         <br>
-    <!--    ниже пагинатор -->
+<!--    ниже пагинатор -->
     {% if total > 1 %}
     <div class="row">
         <nav aria-label="Page navigation example">
@@ -83,4 +77,13 @@
         {% endfor %}
     </div>
 </div>
+{% else %}
+<div class="content_center">
+    <div class="row">
+        <h1> Вы еще не написали ни одной новости. </h1>
+            <a class="ml-2" href="{% url 'create_article' %}"><h1> Хотите создать первую?</h1></a>
+
+    </div>
+</div>
+{% endif %}
 {% endblock %}
