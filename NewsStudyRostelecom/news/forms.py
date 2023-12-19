@@ -24,7 +24,7 @@ class MultipleFileField(forms.FileField):
 from django.forms import inlineformset_factory
 ImagesFormSet = inlineformset_factory(Article, Image, fields=("image",),extra=1,max_num=4,
     widgets={
-        "image_field": MultipleFileField(),
+        "image_field": MultipleFileField(required=False),
     })
 
 class ArticleForm(ModelForm):

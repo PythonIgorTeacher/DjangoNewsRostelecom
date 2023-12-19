@@ -27,6 +27,7 @@ def search_auto(request):
 
 
 from .utils import ViewCountMixin
+#!!!!!можно про миксиин записи просмотра статьи. проговорить в какой моменгт он вызывается
 class ArticleDetailView(ViewCountMixin, DetailView):
     model = Article
     template_name = 'news/news_detail.html'
@@ -50,9 +51,7 @@ class ArticleUpdateView(UpdateView):
         images = Image.objects.filter(article=current_object)
         context['image_form'] = ImagesFormSet(instance=current_object)
         return context
-
     def post(self, request, **kwargs):
-        request.POST = request.POST
         current_object = Article.objects.get(id=request.POST['image_set-0-article'])
         deleted_ids = []
         for i in range(int(request.POST['image_set-TOTAL_FORMS'])): #удаление всех по галочкам

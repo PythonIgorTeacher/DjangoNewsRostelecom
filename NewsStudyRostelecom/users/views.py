@@ -20,6 +20,9 @@ from django.contrib.auth.decorators import login_required
 from news.models import Article
 @login_required
 def add_to_favorites(request, id):
+    name = 'Василий'
+    address = 'Москва'
+
     article = Article.objects.get(id=id)
     #проверям есть ли такая закладка с этой новостью
     bookmark = FavoriteArticle.objects.filter(user=request.user.id,
