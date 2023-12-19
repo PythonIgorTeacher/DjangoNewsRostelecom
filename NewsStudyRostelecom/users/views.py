@@ -84,9 +84,6 @@ def registration(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             account = Account.objects.create(user=user,nickname=user.username)
-
-            #!!!не аутентифицируется - нужно доделать
-            #from django.contrib.auth import authenticate, login
             user = authenticate(username=username,password=password)
             login(request,user)
             messages.success(request,f'{username} был зарегистрирован!')

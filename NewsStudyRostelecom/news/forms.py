@@ -34,7 +34,7 @@ class ArticleForm(ModelForm):
         model = Article
         fields = ['title','anouncement','text','tags','author']
         widgets = {
-            'anouncement': Textarea(attrs={'cols':80,'rows':2}),
+            'anouncement': Textarea(attrs={'cols':80,'rows':2,'style':"background:#FFFFFF;"}),
             'text': Textarea(attrs={'cols': 80, 'rows': 2}),
             'tags': CheckboxSelectMultiple(),
             'author': Select()

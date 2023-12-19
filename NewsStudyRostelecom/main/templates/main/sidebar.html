@@ -110,7 +110,9 @@
                       <div class="d-none d-lg-block "> {{ request.user.username }} </div>
                   </button>
                   <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="{% url 'create_article' %}"> Создать статью</a></li>
+                    {% if request.user|has_group:"Authors" %}
+                    <li><a class="dropdown-item" href="{% url 'create_article' %}"> Создать статью</a></li
+                    {% endif %}
                     <li><a class="dropdown-item" href="{% url 'profile' %}"> Мой аккаунт</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}"> Выход</a></li>
