@@ -5,15 +5,17 @@ from django.http import HttpResponse
 from django.db import connection, reset_queries
 
 import git
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
 def update_server(request):
     if request.method == "POST":
         link = 'https://github.com/PythonIgorTeacher/DjangoNewsRostelecom.git'
         repo = git.Repo(link)
         origin = repo.remotes.origin
         origin.pull()
-        return 'Updated pythonanywhere successfilly'
+        return HttpResponse('Updated pythonanywhere successfully')
     else:
-        return 'wrong event type'
+        return HttpResponse('wrong event type')
 
 
 def index(request):
