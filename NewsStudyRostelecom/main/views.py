@@ -3,7 +3,19 @@ from django.http import HttpResponse
 # Create your views here.
 
 from django.db import connection, reset_queries
-from news.models import Article
+
+import git
+def update_server(request):
+    if request.method == "POST":
+        link = 'https://github.com/PythonIgorTeacher/DjangoNewsRostelecom.git'
+        repo = git.Repo(link)
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated pythonanywhere successfilly'
+    else:
+        return 'wrong event type'
+
+
 def index(request):
     # Примеры Values values_list
     # all_news = Article.objects.all().values('author','title')

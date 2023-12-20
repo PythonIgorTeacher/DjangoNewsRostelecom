@@ -111,7 +111,7 @@
                   </button>
                   <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
                     {% if request.user|has_group:"Authors" %}
-                    <li><a class="dropdown-item" href="{% url 'create_article' %}"> Создать статью</a></li
+                        <li><a class="dropdown-item" href="{% url 'create_article' %}"> Создать статью</a></li>
                     {% endif %}
                     <li><a class="dropdown-item" href="{% url 'profile' %}"> Мой аккаунт</a></li>
                     <li><hr class="dropdown-divider"></li>

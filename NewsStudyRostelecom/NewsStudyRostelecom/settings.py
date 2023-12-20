@@ -15,12 +15,15 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+import environ
+env = environ.Env()
+environ.Env.read_env()
+sc = env('SECRET_KEY')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%2qdz_0vlve3dhbu0u_cxvfd#2mf4zs0m_wx9x)jm2p0r8mb9f'
+SECRET_KEY = sc
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -184,3 +187,5 @@ LOGIN_URL = 'login'
 #Проверить title всех страниц
 
 
+#https://github.com/PythonIgorTeacher/DjangoNewsRostelecom.git
+#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
