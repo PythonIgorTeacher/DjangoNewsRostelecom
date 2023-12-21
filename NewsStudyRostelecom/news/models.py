@@ -32,7 +32,7 @@ class Article(models.Model):
                   ('S','Science'),
                   ('IT','IT'))
     #поля                           #models.CASCADE SET_DEFAULT
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField('Название',max_length=50,default='')
     anouncement = models.TextField('Аннотация',max_length=250)
     text = models.TextField('Текст новости')

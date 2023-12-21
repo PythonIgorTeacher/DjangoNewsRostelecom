@@ -38,6 +38,7 @@ aside{
     padding: 35px 25px;
     background: #212529;
     width: 75%;
+    z-index:2;
 }
 aside a{
     color: #FFFFFF;
@@ -129,4 +130,9 @@ background: #0D6EFD;}
     display: inline-block;
     width: auto;
     vertical-align: middle;
+}
+
+
+#inputformcolor{
+    background:#0000FF;
 }

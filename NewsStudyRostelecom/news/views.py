@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import *
 from django.db import connection, reset_queries
 from django.views.generic import DetailView, DeleteView, UpdateView
@@ -9,9 +9,7 @@ from .forms import *
 
 
 import json
-#URL:    path('search_auto/', views.search_auto, name='search_auto'),
 def search_auto(request):
-    print('Случился запрос!')
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         q = request.GET.get('term','')
         articles = Article.objects.filter(title__icontains=q)
@@ -22,8 +20,28 @@ def search_auto(request):
     else:
         data = 'fail'
     mimetype = 'application/json'
-    return HttpResponse(data,mimetype)
+    return HttpResponse(data, mimetype)
 
+def search(request):
+    if request.method == 'POST': #пришел запрос из бокового меню
+        value = request.POST['search_input'] #находим новости
+        articles = Article.objects.filter(title__icontains=value)
+        if len(articles) == 1: #если одна- сразу открываем подробное отображение новости
+            return render(request, 'news/news_detail.html', {'article': articles[0]})
+        else:
+            #если несколько - отправляем человека в функцию index со страницей-списком новостей и фильтрами
+            #не забываем передать поисковый запрос:
+            # либо через сессии:
+            request.session['search_input'] = value
+            return redirect('news')
+            #либо через фрагмент URLссылки:
+            # но в таком случае придётся обрабатывать ссылку в Urls
+            #функция reverse из модуля Urls добавит переданные аргументы в качестве get-аргументов.
+            # return redirect(reverse('news', kwargs={'search_input':value}))
+
+            # return render(request, 'news/news_list.html', {'articles': articles})
+    else:
+        return redirect('home')
 
 
 from .utils import ViewCountMixin
@@ -105,7 +123,7 @@ def create_article(request):
                 form.save_m2m() #сохраняем теги
                 for img in request.FILES.getlist('image_field'):
                     Image.objects.create(article=new_article, image=img, title=img.name)
-                return redirect('news_index')
+                return redirect('news')
     else:
         form = ArticleForm()
     return render(request,'news/create_article.html', {'form':form })
@@ -128,10 +146,18 @@ def index(request):
             articles = Article.objects.filter(author=selected_author)
         if selected_category != 0: #фильтруем найденные по авторам результаты по категориям
             articles = articles.filter(category__icontains=categories[selected_category-1][0])
-    else: #если страница открывется впервые
+    else: #если страница открывется впервые или нас переадресовала сюда функция поиск
         selected_author = 0
         selected_category = 0
-        articles = Article.objects.all()
+        value = request.session.get('search_input') #вытаскиваем из сессии значение поиска
+        if value != None: #если не пустое - находим нужные ноновсти
+            articles = Article.objects.filter(title__icontains=value)
+            del request.session['search_input'] #чистим сессию, чтобы этот фильтр не "заело"
+        else:
+            #если не оказалось таокго ключика или запрос был кривой - отображаем все элементы
+            articles = Article.objects.all()
+    #сортировка от свежих к старым новостям
+    articles=articles.order_by('-date')
     total = len(articles)
     p = Paginator(articles,2)
     page_number = request.GET.get('page')
@@ -142,4 +168,31 @@ def index(request):
     return render(request,'news/news_list.html',context)
 
 
+
+def news_slider(request):
+    categories = Article.categories #создали перечень категорий
+    author_list = User.objects.all() #создали перечень авторов
+    if request.method == "POST":
+        selected_author = int(request.POST.get('author_filter'))
+        selected_category = int(request.POST.get('category_filter'))
+        if selected_author == 0: #выбраны все авторы
+            articles = Article.objects.all()
+        else:
+            articles = Article.objects.filter(author=selected_author)
+        if selected_category != 0: #фильтруем найденные по авторам результаты по категориям
+            articles = articles.filter(category__icontains=categories[selected_category-1][0])
+    else: #если страница открывется впервые
+        selected_author = 0
+        selected_category = 0
+        articles = Article.objects.all()
+    #сортировка от свежих к старым новостям
+    articles=articles.order_by('-date')
+    total = len(articles)
+    p = Paginator(articles,2)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj, 'author_list':author_list, 'selected_author':selected_author,
+               'categories':categories,'selected_category': selected_category, 'total':total,}
+
+    return render(request,'news/news_slider.html',context)
 

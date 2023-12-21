@@ -53,6 +53,16 @@ def profile_update(request):
                    'user_form':UserUpdateForm(instance=user)}
     return render(request,'users/edit_profile.html',context)
 
+
+@login_required
+def profile_delete(request):
+    user = request.user
+    user.delete()
+    return redirect('news')
+
+
+
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 def password_update(request):

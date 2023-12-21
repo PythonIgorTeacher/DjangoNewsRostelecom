@@ -4,11 +4,7 @@ from .forms import DemoForm, Demo
 from news.models import Article
 
 def index(request):
-    articles= Article.objects.all()
-    s = ''
-    for article in articles:
-        s+= f'<h1> { article.title} </h1><br>'
-    return HttpResponse(s)
+    return render(request,'home/index.html')
 
 
 

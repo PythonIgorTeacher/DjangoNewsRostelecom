@@ -10,9 +10,11 @@ from django.forms import TextInput, EmailInput, FileInput, Select
 class UserUpdateForm(UserChangeForm):
     class Meta:
         model = User
+
         fields = ['username', 'email', 'first_name', 'last_name']
-        widgets = {'username': TextInput({'class': 'textinput form-control',
-                                          'placeholder': 'username'}),
+        widgets = {'username': TextInput({'class': 'textinput form-control newinput',
+                                          'placeholder': 'username',
+                                          'id':'inputformcolor'}),
                    'email': EmailInput({'class': 'textinput form-control',
                                         'placeholder': 'email'}),
                    'first_name': TextInput({'class': 'textinput form-control',

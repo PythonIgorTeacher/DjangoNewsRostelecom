@@ -3,7 +3,6 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% load users_extras %}
-<link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 <script src="https://kit.fontawesome.com/a97047fead.js" crossorigin="anonymous"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,9 +13,9 @@
 <!-- jQuery !-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script>
 <!-- jQuery UI !-->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static 'main/css/search_autocomplete.css' %}">
 
+<script src="{% static 'main/js/jquery.js' %}"></script>
 <script>
   $(function() {
     $("#search_input").autocomplete({
@@ -71,15 +70,18 @@
                     </a>
               </li>
             <li>
-                <a href="home/" {% if request.path  == '/home/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-backward menu-icon""></i>  <div class="d-none d-lg-block">Адаптированный шаблон </div>
+                <a href="{% url 'demo' %}" {% if request.path  == '/home/' %} class="link-active" aria-current="page" {% endif %}>
+                    <i class="fa fa-backward menu-icon"></i>  <div class="d-none d-lg-block">Адаптированный шаблон </div>
                 </a>
               </li>
                 <div class="row">
-                    <div class="search">
-                        <input id="search_input">
-                        <button class="btn btn-primary">🔍︎</button>
-                    </div>
+                    <form action="{% url 'search' %}" method="post">
+                        {% csrf_token %}
+                        <div class="search">
+                            <input id="search_input" name="search_input">
+                            <button type="submit" class="btn btn-primary" style="font-size:12px;">🔍︎</button>
+                        </div>
+                    </form>
                 </div>
 
               {% if request.user|has_group:"Authors" %}

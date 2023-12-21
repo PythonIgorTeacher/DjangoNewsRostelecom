@@ -1,0 +1,91 @@
+{% extends 'main/base_template.html' %}
+{% load static %}
+{% load bootstrap5 %}
+{% block title %} Слайдер с новостями {% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+</script>
+
+<div class="content_center">
+    <div class="row">
+        <label><h1> Фильтры: (Всего :{{ total }} результатов) </h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group col-11">
+                    <select class="form-select" name="author_filter" style="width:40%">
+                        <option value="0">Все авторы</option>
+                        {% for author in author_list %}
+                        <option value="{{ author.id }}" {% if selected_author == author.id %} selected {% endif %}> {{
+                            author.username }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-select" name="category_filter" style="width:40%">
+                        <option value="0">Все категории</option>
+                        {% for c in categories %}
+                        <option value="{{ forloop.counter }}" {% if selected_category == forloop.counter %} selected {% endif %}> {{ c.1 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" class="btn btn-success" value="Применить">
+                </div>
+            </form>
+        </label>
+    </div>
+    <br>
+<!--    карусель-->
+
+    <div class="row">
+        <div id="carouselControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox" style=" width:auto; height: 600px; !important;">
+                {% for article in articles %}
+                <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                    <div class="single_news">
+                        <div class="p-4 p-md-5 text-white rounded bg-dark">
+                            <div class="row">
+                                <div class="col-md-{% if article.image_set.all %}6{% else %}12 {% endif %} px-0">
+                                    <h1 class="display-4 fst-italic"> {{ article.title }}</h1>
+                                    <p class="lead my-3">{{ article.anouncement }}</p>
+                                    <p class="lead mb-0"><a href="{% url 'news_detail' article.pk %}"
+                                                            class="text-white fw-bold">Полный текст..</a></p>
+                                    <p><small>Просмотры: {{ article.get_views }}</small></p>
+                                    <a class="btn btn-success" href="{% url 'favorites' article.pk %}"><i
+                                            class="fa fa-bookmark">В избранное</i></a>
+                                </div>
+                                {% if article.image_set.all %}
+                                <div class="col-md-6 px-0">
+                                    <img src="{{ article.image_set.all.0.image.url }}"
+                                         style="width:100%; height:auto; border-radius:5px;">
+                                    <br>
+                                    <br>
+                                    <img src="{{ article.image_set.all.1.image.url }}"
+                                         style="width:100%; height:auto; border-radius:5px;">
+
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    {% endblock %}
