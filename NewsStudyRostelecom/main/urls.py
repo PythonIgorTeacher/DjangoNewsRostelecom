@@ -1,6 +1,8 @@
 from django.urls import path
 
 from . import views
+
+
 urlpatterns = [
     path('', views.index, name='home'),
     path('update_server/',views.update_server,name='update_server'),

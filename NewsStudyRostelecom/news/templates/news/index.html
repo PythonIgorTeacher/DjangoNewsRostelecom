@@ -1,12 +1,13 @@
 {% extends 'main/base_template.html' %}
 {% load static %}
 {% load bootstrap5 %}
-{% block title %} Главная страница {% endblock %}
+{% load i18n %}
+{% block title %} Новости-главная {% endblock %}
 
 {% block content %}
         <div class="row">
             <div class="text-center" style="margin-top:30px;">
-                    <h1 >Главная страница</h1>
+                    <h1 >{% trans 'Новости - главная' %}</h1>
             </div>
 
              <div class="single_news">

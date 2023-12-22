@@ -49,9 +49,17 @@ class ArticleAdmin(admin.ModelAdmin):
         queryset = queryset.annotate(_symbols=Length('text'))
         return queryset
 
+# from modeltranslation.translator import register, TranslationOptions
+
+# from .models import *
+# @register(Tag)
+# class TagTranslationOptions(TranslationOptions):
+#     fields = ('title','status')
+
+from modeltranslation.admin import TranslationAdmin
 @admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ['title','status','tag_count']
+class TagAdmin(TranslationAdmin):
+    list_display = ['id','title','status','tag_count']
     list_filter = ['title','status']
     actions = ['set_true']
 

@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
+from django.utils import translation
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db import connection, reset_queries
 import git
 
@@ -127,3 +130,22 @@ def sidebar(request):
 def custom_404(request, exception):
     # return render(request,'main/sidebar.html')
     return HttpResponse(f'Ой-ёй-ёй! Какая жалость!:{exception}')
+
+
+
+def selectlanguage(request):
+    #в 25 символов входит корневой катлого + код языка из двух букв + '/'
+    url = request.META.get('HTTP_REFERER')[25:]
+    # print('URL:',url)
+    if request.method =='POST':
+        current_language = translation.get_language()
+        # print('До:',current_language)
+        lang = request.POST.get('language')
+        translation.activate(lang)
+        # print('После:',translation.get_language())
+        response = HttpResponse('')
+        response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang)
+        # print('/'+lang+'/'+url)
+        return HttpResponseRedirect('/'+lang+'/'+url)
+
+

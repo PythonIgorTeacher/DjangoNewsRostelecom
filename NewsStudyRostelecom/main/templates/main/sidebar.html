@@ -3,6 +3,7 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% load users_extras %}
+{% load i18n %}
 <script src="https://kit.fontawesome.com/a97047fead.js" crossorigin="anonymous"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,10 +43,27 @@
 <!--            d-none d-lg-block | Такой класс позвоялет спрятать элементы при отображении на экранах размером меньше lg-->
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
               <img  src="{% static 'main' %}/img/News_icon.png" width="40" height="50">
-              <span class="fs-5 d-none d-lg-block responsive-title">Новости нашего города</span>
+              <span class="fs-5 d-none d-lg-block responsive-title">{% trans 'Новости нашего города' %}</span>
             </a>
             <hr>
+
+
             <ul class="nav nav-pills flex-column mb-auto">
+                 <li class="dropdown default-dropdown">
+                <form method="post" action="{% url 'selectlanguage' %}">
+                    {% csrf_token %}
+                    <select name="language" onchange="submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                            {{ language.name_local }} ({{language.code }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </li>
               <li class="nav-item">
                   <a href="/admin/" {% if request.path  == '/admin/' %} class="link-active" aria-current="page" {% endif %}>
                       <i class="fa fa-user menu-icon {% if request.path  == '/admin/' %} link-active {% endif %}" ></i>

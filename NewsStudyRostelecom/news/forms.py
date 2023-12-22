@@ -26,7 +26,7 @@ ImagesFormSet = inlineformset_factory(Article, Image, fields=("image",),extra=1,
     widgets={
         "image_field": MultipleFileField(required=False),
     })
-
+from django.utils.translation import gettext as _
 class ArticleForm(ModelForm):
     image_field = MultipleFileField()
 
@@ -38,4 +38,10 @@ class ArticleForm(ModelForm):
             'text': Textarea(attrs={'cols': 80, 'rows': 2}),
             'tags': CheckboxSelectMultiple(),
             'author': Select()
+        }
+        labels={
+            'anouncement': _('лейбл поля анонс'),
+            'text':  _('лейбл поля текст'),
+            'tags':  _('лейбл поля теги'),
+            'author':  _('лейбл поля авторы'),
         }
