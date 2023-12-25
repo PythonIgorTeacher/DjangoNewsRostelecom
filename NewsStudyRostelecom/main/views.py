@@ -153,6 +153,7 @@ def selectlanguage(request):
         return HttpResponseRedirect('/'+lang+'/'+url[slash_index:])
 
 
+
 import git
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
