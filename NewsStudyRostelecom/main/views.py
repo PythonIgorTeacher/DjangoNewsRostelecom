@@ -152,30 +152,29 @@ def selectlanguage(request):
         # print('/'+lang+'/'+url)
         return HttpResponseRedirect('/'+lang+'/'+url[slash_index:])
 
-
 import hmac
-from hashlib import sha1
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseServerError
-from django.utils.encoding import force_bytes
+import hashlib
+def is_valid_signature(x_hub_signature, data, private_key):
+    # x_hub_signature and data are from the webhook payload
+    # private key is your webhook secret
+    hash_algorithm, github_signature = x_hub_signature.split('=', 1)
+    algorithm = hashlib.__dict__.get(hash_algorithm)
+    encoded_key = bytes(private_key, 'latin-1')
+    mac = hmac.new(encoded_key, msg=data, digestmod=algorithm)
+    return hmac.compare_digest(mac.hexdigest(), github_signature)
+
+
 import git
 from django.views.decorators.csrf import csrf_exempt
+
 @csrf_exempt
 def update_server(request):
-    # проверяем доступ
-    header_signature = request.META.get('HTTP_X_HUB_SIGNATURE')
-    if header_signature is None:
-        return HttpResponseForbidden('Доступ запрещен.')
-    sha_name, signature = header_signature.split('=')
-    if sha_name != 'sha1':
-        return HttpResponseServerError('Операция не поддерживается.', status=501)
-    mac = hmac.new(force_bytes(settings.GITHUB_WEBHOOK_KEY), msg=force_bytes(request.body), digestmod=sha1)
-    if not hmac.compare_digest(force_bytes(mac.hexdigest()), force_bytes(signature)):
-        return HttpResponseForbidden('Доступ запрещен.')
-
     if request.method == "POST":
-        local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
-        repo = git.Repo(local_dir) #создаём объект-локальный репозиторий, куда будет происходить Pull
-        repo.remotes.origin.pull()
-        return HttpResponse('Pythonanywhere updated successfully')
+        x_hub_signature = request.headers.get("X - Hub - Signature")
+        if not is_valid_signature(x_hub_signature, request.data, settings.GITHUB_WEBHOOK_KEY):
+            local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
+            repo = git.Repo(local_dir) #создаём объект-локальный репозиторий, куда будет происходить Pull
+            repo.remotes.origin.pull()
+            return HttpResponse('Pythonanywhere updated successfully')
     else:
         return HttpResponse('some kind of error')
