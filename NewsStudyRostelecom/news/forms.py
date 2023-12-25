@@ -30,7 +30,6 @@ from django.utils.translation import gettext as _
 class ArticleForm(ModelForm):
     image_field = MultipleFileField()
 
-
     class Meta:
         model = Article
         fields = ['title','anouncement','text','tags','author']
