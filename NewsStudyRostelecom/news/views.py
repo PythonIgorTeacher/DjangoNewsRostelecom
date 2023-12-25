@@ -128,8 +128,9 @@ def create_article(request):
         form = ArticleForm()
     return render(request,'news/create_article.html', {'form':form })
 
-from time import time
 
+
+from time import time
 from django.core.paginator import Paginator
 # def pagination(request):
 #     articles = Article.objects.all()
