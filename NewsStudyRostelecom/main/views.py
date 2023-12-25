@@ -162,7 +162,7 @@ def update_server(request):
         # repo = git.Git(link)
         # repo.pull('origin','master')
         local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
-        repo = git.Repo(local_dir)
+        repo = git.Repo(local_dir) #создаём объект-локальный репозиторий, куда будет происходить Pull
         repo.remotes.origin.pull()
         return HttpResponse('Pythonanywhere updated successfully')
     else:
