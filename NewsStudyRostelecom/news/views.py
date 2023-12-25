@@ -51,6 +51,7 @@ class ArticleDetailView(ViewCountMixin, DetailView):
     template_name = 'news/news_detail.html'
     context_object_name = 'article'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         current_object = self.object
