@@ -133,6 +133,7 @@ def custom_404(request, exception):
 
 
 
+
 def selectlanguage(request):
     #в 25 символов входит корневой катлого + код языка из двух букв + '/'
     url = request.META.get('HTTP_REFERER')[25:]
