@@ -19,6 +19,7 @@ import environ
 env = environ.Env()
 environ.Env.read_env()
 sc = env('SECRET_KEY')
+GITHUB_WEBHOOK_KEY = env('GITHUB_WEBHOOK_KEY')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
