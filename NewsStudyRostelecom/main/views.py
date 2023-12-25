@@ -170,7 +170,7 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def update_server(request):
     if request.method == "POST":
-        x_hub_signature = request.headers.get("X - Hub - Signature")
+        x_hub_signature = request.headers.get('HTTP_X_HUB_SIGNATURE')
         if not is_valid_signature(x_hub_signature, request.data, settings.GITHUB_WEBHOOK_KEY):
             local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
             repo = git.Repo(local_dir) #создаём объект-локальный репозиторий, куда будет происходить Pull
