@@ -135,9 +135,12 @@ def custom_404(request, exception):
 
 
 def selectlanguage(request):
+    print('Сработал выбор языка')
     #в 25 символов входит корневой катлого + код языка из двух букв + '/'
-    url = request.META.get('HTTP_REFERER')[25:]
-    # print('URL:',url)
+    url = str(request.META.get('HTTP_REFERER'))
+    slash_index = url.find('/',9) +4  #начинаем поиск первого одиночного слэша в ссылке
+    ## с 9го 4 символа - это / + 'язык'+ /
+    print('Ссылка:',url[slash_index:])
     if request.method =='POST':
         current_language = translation.get_language()
         # print('До:',current_language)
@@ -147,6 +150,6 @@ def selectlanguage(request):
         response = HttpResponse('')
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang)
         # print('/'+lang+'/'+url)
-        return HttpResponseRedirect('/'+lang+'/'+url)
+        return HttpResponseRedirect('/'+lang+'/'+url[slash_index:])
 
 
