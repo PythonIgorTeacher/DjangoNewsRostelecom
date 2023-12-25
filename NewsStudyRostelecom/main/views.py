@@ -153,3 +153,15 @@ def selectlanguage(request):
         return HttpResponseRedirect('/'+lang+'/'+url[slash_index:])
 
 
+import git
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def update_server(request):
+    if request.method == "POST":
+        # link = '/home/demouserrostelecom/DjangoNewsRostelecom/'
+        link = 'https://github.com/PythonIgorTeacher/DjangoNewsRostelecom.git'
+        repo = git.Git(link)
+        repo.pull('origin','master')
+        return HttpResponse('Pythonanywhere updated successfully')
+    # else:
+    #     return HttpResponse('some kind of error')
