@@ -44,6 +44,7 @@ def search(request):
         return redirect('home')
 
 
+
 from .utils import ViewCountMixin
 #!!!!!можно про миксиин записи просмотра статьи. проговорить в какой моменгт он вызывается
 class ArticleDetailView(ViewCountMixin, DetailView):
