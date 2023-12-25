@@ -158,9 +158,12 @@ from django.views.decorators.csrf import csrf_exempt
 def update_server(request):
     if request.method == "POST":
         # link = '/home/demouserrostelecom/DjangoNewsRostelecom/'
-        link = 'https://github.com/PythonIgorTeacher/DjangoNewsRostelecom.git'
-        repo = git.Git(link)
-        repo.pull('origin','master')
+        # link = 'https://github.com/PythonIgorTeacher/DjangoNewsRostelecom.git'
+        # repo = git.Git(link)
+        # repo.pull('origin','master')
+        local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
+        repo = git.Repo(local_dir)
+        repo.remotes.origin.pull()
         return HttpResponse('Pythonanywhere updated successfully')
     else:
         return HttpResponse('some kind of error')
