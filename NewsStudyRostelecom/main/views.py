@@ -163,5 +163,5 @@ def update_server(request):
         repo = git.Git(link)
         repo.pull('origin','master')
         return HttpResponse('Pythonanywhere updated successfully')
-    # else:
-    #     return HttpResponse('some kind of error')
+    else:
+        return HttpResponse('some kind of error')
