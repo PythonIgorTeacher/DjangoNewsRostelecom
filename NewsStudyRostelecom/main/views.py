@@ -152,29 +152,38 @@ def selectlanguage(request):
         # print('/'+lang+'/'+url)
         return HttpResponseRedirect('/'+lang+'/'+url[slash_index:])
 
-import hmac
 import hashlib
-def is_valid_signature(x_hub_signature, data, private_key):
-    # x_hub_signature and data are from the webhook payload
-    # private key is your webhook secret
-    hash_algorithm, github_signature = x_hub_signature.split('=', 1)
-    algorithm = hashlib.__dict__.get(hash_algorithm)
-    encoded_key = bytes(private_key, 'latin-1')
-    mac = hmac.new(encoded_key, msg=data, digestmod=algorithm)
-    return hmac.compare_digest(mac.hexdigest(), github_signature)
+import hmac
+from django.http import HttpResponse, HttpResponseServerError
+def verify_signature(payload_body, secret_token, signature_header):
+    """Verify that the payload was sent from GitHub by validating SHA256.
 
+    Raise and return 403 if not authorized.
 
+    Args:
+        payload_body: original request body to verify (request.body())
+        secret_token: GitHub app webhook token (WEBHOOK_SECRET)
+        signature_header: header received from GitHub (x-hub-signature-256)
+    """
+    if not signature_header:
+        return HttpResponseServerError('x-hub-256 заголовок отсутствует.', status=403)
+    hash_object = hmac.new(secret_token.encode('utf-8'), msg=payload_body, digestmod=hashlib.sha256)
+    expected_signature = "sha256=" + hash_object.hexdigest()
+    if not hmac.compare_digest(expected_signature, signature_header):
+        return HttpResponseServerError('Ключ не подходит.', status=403)
+
+from hashlib import sha1
+from django.utils.encoding import force_bytes
 import git
 from django.views.decorators.csrf import csrf_exempt
-
 @csrf_exempt
 def update_server(request):
+    header_signature = request.META.get('HTTP_X_HUB_SIGNATURE')
+    verify_signature(request.body(),settings.GITHUB_WEBHOOK_KEY,header_signature)
     if request.method == "POST":
-        x_hub_signature = request.headers.get('HTTP_X_HUB_SIGNATURE')
-        if not is_valid_signature(x_hub_signature, request.data, settings.GITHUB_WEBHOOK_KEY):
-            local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
-            repo = git.Repo(local_dir) #создаём объект-локальный репозиторий, куда будет происходить Pull
-            repo.remotes.origin.pull()
-            return HttpResponse('Pythonanywhere updated successfully')
+        local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom/'
+        repo = git.Repo(local_dir) #создаём объект-локальный репозиторий, куда будет происходить Pull
+        repo.remotes.origin.pull()
+        return HttpResponse('Pythonanywhere updated successfully')
     else:
         return HttpResponse('some kind of error')
