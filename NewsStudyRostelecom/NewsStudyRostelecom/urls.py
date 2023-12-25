@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('selectlanguage/',main_views.selectlanguage, name='selectlanguage'),
     path('i18n/',include('django.conf.urls.i18n')),
+    path('update_server/', main_views.update_server, name='update_server'),
 
     ]
 urlpatterns += i18n.i18n_patterns(
@@ -33,7 +34,6 @@ urlpatterns += i18n.i18n_patterns(
     path('news/', include('news.urls')),
     path('users/', include('users.urls')),
     path('home/', include('home.urls')),
-    path('update_server/', main_views.update_server, name='update_server'),
     #htpp://127.0.0.1:8000/
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
