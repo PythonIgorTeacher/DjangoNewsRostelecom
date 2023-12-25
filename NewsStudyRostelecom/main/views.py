@@ -172,6 +172,7 @@ def verify_signature(payload_body, secret_token, signature_header):
     if not hmac.compare_digest(expected_signature, signature_header):
         return HttpResponseServerError('Ключ не подходит.', status=403)
 
+
 from hashlib import sha1
 from django.utils.encoding import force_bytes
 import git
