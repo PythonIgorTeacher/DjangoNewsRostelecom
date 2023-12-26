@@ -190,7 +190,14 @@ def selectlanguage(request):
 #     else:
 #         return HttpResponse('some kind of error')
 
+import git
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def update_server(request):
-    return HttpResponse('Хук работатет')
+    if request.method == "POST":
+        local_dir = '/home/demouserrostelecom/DjangoNewsRostelecom'
+        repo = git.Repo(local_dir)
+        repo.remotes.origin.pull()
+        return HttpResponse("PythonAnywhere server updated successfully")
+    else:
+        return HttpResponse("Вы попали не туда")
