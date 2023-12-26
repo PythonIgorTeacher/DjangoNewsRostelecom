@@ -204,11 +204,11 @@ def verify_signature(payload_body, secret_token, signature_header):
         signature_header: header received from GitHub (x-hub-signature-256)
     """
     if not signature_header:
-        return HttpResponseServerError("x-hub-signature-256 header is missing!", status_code=403)
+        return HttpResponseServerError("x-hub-signature-256 header is missing!", status=403)
     hash_object = hmac.new(secret_token.encode('utf-8'), msg=payload_body, digestmod=hashlib.sha256)
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature_header):
-        return HttpResponseServerError("Request signatures didn't match!", status_code=403)
+        return HttpResponseServerError("Request signatures didn't match!", status=403)
 
 
 
