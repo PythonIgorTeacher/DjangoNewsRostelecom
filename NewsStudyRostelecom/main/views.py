@@ -191,7 +191,6 @@ def selectlanguage(request):
 #         return HttpResponse('some kind of error')
 
 
-
 import hashlib
 import hmac
 from django.http import HttpResponseServerError
