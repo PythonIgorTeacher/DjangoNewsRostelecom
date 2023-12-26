@@ -160,7 +160,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "static"
 #python manage.py collectstatic
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
     "home/static/",
 ]
 # Полный сброс миграции таблиц
