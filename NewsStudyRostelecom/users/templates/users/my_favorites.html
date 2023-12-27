@@ -7,9 +7,9 @@
 {% block content %}
 
 <div class="content_center">
-    {% if articles|length  != 0 %}
+
     <div class="row">
-        <label><h1> Фильтры: (Всего :{{ total }} результатов) </h1>
+        <label><h1> Избранные статьи: (Всего :{{ total }} результатов) </h1>
             <form method="post">
                 {% csrf_token %}
                 <div class="form-group col-11">
@@ -26,6 +26,7 @@
         </label>
     </div>
         <br>
+{% if articles|length  != 0 %}
 <!--    ниже пагинатор -->
     {% if total > 1 %}
     <div class="row">
@@ -80,8 +81,8 @@
 {% else %}
 <div class="content_center">
     <div class="row">
-        <h1> Вы еще не написали ни одной новости. </h1>
-            <a class="ml-2" href="{% url 'create_article' %}"><h1> Хотите создать первую?</h1></a>
+        <h1> нет новостей с такими параметрами</h1>
+            <a class="ml-2" href="{% url 'news' %}"><h1> Поищите тут</h1></a>
 
     </div>
 </div>

@@ -70,28 +70,21 @@
                       <div class="d-none d-lg-block">Админка</div>
                   </a>
               </li>
+                {% comment %}
+
               <li class="nav-item">
                    <a href="{% url 'home' %}" {% if request.resolver_match.view_name  == 'home' %} class="link-active" aria-current="page" {% endif %}>
                       <i class="fa fa-house menu-icon" ></i>
                       <div class="d-none d-lg-block"> Главная </div>
                   </a>
               </li>
-
+            {% endcomment %}
               <li class="nav-item">
                  <a href="{% url 'news' %}" {% if request.resolver_match.view_name  == 'news' %} class="link-active" aria-current="page" {% endif %}>
                     <i class="fa fa-bars menu-icon"></i> <div class="d-none d-lg-block">Все новости</div>
                 </a>
               </li>
-                <li class="nav-item">
-                  <a href="/examples/" {% if request.path  == '/examples/' %} class="link-active" aria-current="page" {% endif %}>
-                        <i class="fa fa-hand menu-icon"></i>  <div class="d-none d-lg-block"> Примеры с урока</div>
-                    </a>
-              </li>
-            <li>
-                <a href="{% url 'demo' %}" {% if request.path  == '/home/' %} class="link-active" aria-current="page" {% endif %}>
-                    <i class="fa fa-backward menu-icon"></i>  <div class="d-none d-lg-block">Адаптированный шаблон </div>
-                </a>
-              </li>
+
                 <div class="row">
                     <form action="{% url 'search' %}" method="post">
                         {% csrf_token %}
@@ -109,17 +102,19 @@
                 </a>
               </li>
               {% endif %}
+
                <li>
-                <a href="#" {% if request.path  == '/myarticles/' %} class="link-active" aria-current="page" {% endif %}>
+                <a href="{% url 'my_favorites_list' %}" {% if request.resolver_match.view_name  == 'my_favorites_list' %} class="link-active" aria-current="page" {% endif %}>
                     <i class="fa fa-newspaper menu-icon"></i>  <div class="d-none d-lg-block"> Избранное</div>
                 </a>
               </li>
-
+            {% comment %}
               <li>
                 <a href="{% url 'about' %}" {% if request.resolver_match.view_name  == 'about' %} class="link-active" aria-current="page" {% endif %}>
                   <i class="fa fa-handshake menu-icon"></i>  <div class="d-none d-lg-block"> О сайте</div>
                 </a>
               </li>
+                {% endcomment %}
             </ul>
             <hr>
 
@@ -157,7 +152,18 @@
                 </ul>
             {% endif %}
 
-                <br >
+        <script
+              src="https://code.jquery.com/jquery-3.4.1.min.js"
+              integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+              crossorigin="anonymous"></script>
+
+            <script text="javascript">
+                setTimeout(fade_out, 3000);
+                function fade_out() {
+                    $(".alert").fadeOut();
+                }
+            </script>
+             <br >
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}">

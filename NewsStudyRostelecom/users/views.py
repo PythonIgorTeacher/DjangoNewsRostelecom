@@ -145,3 +145,24 @@ def my_news_list(request):
                'categories':categories,'selected_category': selected_category}
 
     return render(request,'users/my_news_list.html',context)
+
+
+def my_favorites_list(request):
+    bookmarks = FavoriteArticle.objects.filter(user=request.user)
+    articles = Article.objects.filter(favoritearticle__in=bookmarks)
+    categories = Article.categories #создали перечень категорий
+
+    if request.method == "POST":
+        selected_category = int(request.POST.get('category_filter'))
+        if selected_category != 0: #фильтруем найденные результаты по категориям
+            articles = articles.filter(category__icontains=categories[selected_category-1][0])
+    else: #если страница открывется впервые
+        selected_category = 0
+    total = len(articles)
+    p = Paginator(articles,2)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    context = {'articles': page_obj, 'total':total,
+               'categories':categories,'selected_category': selected_category}
+
+    return render(request,'users/my_favorites.html',context)

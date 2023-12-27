@@ -10,6 +10,5 @@ urlpatterns = [
     path('create', views.create_article, name='create_article'),
     path('slider', views.news_slider, name='news_slider'),
     path('search', views.search, name='search'),
-    # path('pagination',views.pagination,name='pagination'),
 ]
 
