@@ -17,3 +17,8 @@ class ViewCountMixin:
         #если его еще не было - выполнится Create
         ViewCount.objects.get_or_create(article=obj, ip_address=ip_address)
         return obj
+
+
+
+
+

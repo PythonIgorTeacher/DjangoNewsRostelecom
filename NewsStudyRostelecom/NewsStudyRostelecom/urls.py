@@ -27,6 +27,7 @@ urlpatterns = [
     path('selectlanguage/',main_views.selectlanguage, name='selectlanguage'),
     path('i18n/',include('django.conf.urls.i18n')),
     path('update_server/', main_views.update_server, name='update_server'),
+    path('', main_views.language_redirect, name='language_redirect'),
     ]
 urlpatterns += i18n.i18n_patterns(
     path('',include('main.urls')),

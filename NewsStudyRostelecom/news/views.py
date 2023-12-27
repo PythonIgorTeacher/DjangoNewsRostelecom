@@ -124,6 +124,7 @@ def create_article(request):
                 form.save_m2m() #сохраняем теги
                 for img in request.FILES.getlist('image_field'):
                     Image.objects.create(article=new_article, image=img, title=img.name)
+
                 return redirect('news')
     else:
         form = ArticleForm()
@@ -142,8 +143,8 @@ def index(request):
     if request.method == "POST":
         selected_author = int(request.POST.get('author_filter'))
         selected_category = int(request.POST.get('category_filter'))
-        request.session['selected_author'] = selected_author
-        request.session['selected_category'] = selected_category
+        request.session['author_filter'] = selected_author
+        request.session['category_filter'] = selected_category
         if selected_author == 0: #выбраны все авторы
             articles = Article.objects.all()
         else:
@@ -151,19 +152,23 @@ def index(request):
         if selected_category != 0: #фильтруем найденные по авторам результаты по категориям
             articles = articles.filter(category__icontains=categories[selected_category-1][0])
     else: #если страница открывется впервые или нас переадресовала сюда функция поиск
-        selected_author = request.session.get('selected_author')
-        if selected_author != None: #если не пустое - находим нужные ноновсти
-            articles = Article.objects.filter(author=selected_author)
-        else:
-            selected_author = 0
-        selected_category = 0
         value = request.session.get('search_input') #вытаскиваем из сессии значение поиска
         if value != None: #если не пустое - находим нужные ноновсти
             articles = Article.objects.filter(title__icontains=value)
-            del request.session['search_input'] #чистим сессию, чтобы этот фильтр не "заело"
-        else:
-            #если не оказалось таокго ключика или запрос был кривой - отображаем все элементы
+            # del request.session['search_input'] #чистим сессию, чтобы этот фильтр не "заело"
+        else: #если это не поисковый запрос, а переход по пагинатору или первое открытие
+            selected_author = request.session.get('author_filter')
+            selected_category = request.session.get('category_filter')
             articles = Article.objects.all()
+            if selected_author != None and int(selected_author) != 0:  # если не пустое - находим нужные ноновсти
+                articles = articles.filter(author=selected_author)
+            else:
+                selected_author = 0
+            if selected_category != None and int(selected_category) != 0:  # фильтруем найденные по авторам результаты по категориям
+                articles = articles.filter(category__icontains=categories[selected_category - 1][0])
+            else:
+                selected_category = 0
+
     #сортировка от свежих к старым новостям
     articles=articles.order_by('-date')
     total = len(articles)
@@ -171,8 +176,6 @@ def index(request):
     page_number = request.GET.get('page')
     page_obj = p.get_page(page_number)
     title = _('Заголовок страницы новости-индекс')
-    demo_variable = _('текст демо-переменной')
-    print('Значение переменной:', demo_variable)
     context = {'articles': page_obj, 'author_list':author_list, 'selected_author':selected_author,
                'categories':categories,'selected_category': selected_category, 'total':total,
                'title':title
