@@ -23,14 +23,21 @@ class UserUpdateForm(UserChangeForm):
                                            'placeholder': 'Last name'}),
                    }
 
-
+#https://stackoverflow.com/questions/72278524/in-django-forms-i-cant-use-regex-validators
+#https://stackoverflow.com/questions/29865320/django-form-field-regex-validation-for-alphanumeric-characters
 from .models import Account
+from django.core.validators import RegexValidator
 class AccountUpdateForm(forms.ModelForm):
+
     class Meta:
         model = Account
         fields = ['phone', 'address','vk','instagram','telegram', 'account_image']
-        widgets = {'phone': TextInput({'class': 'textinput form-control',
-                                       'placeholder': 'phone number'}),
+        widgets = {'phone': TextInput(attrs={'class': 'textinput form-control',
+                                       "type":"tel",
+                                       "placeholder": '+7(___)___-__-__',
+                                       "required":"required",
+                                       },
+                                      ),
                    'address': TextInput({'class': 'textinput form-control',
                                          'placeholder': 'address'}),
                    'vk': TextInput({'class': 'textinput form-control',

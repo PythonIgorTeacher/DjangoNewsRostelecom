@@ -27,21 +27,23 @@ ImagesFormSet = inlineformset_factory(Article, Image, fields=("image",),extra=1,
         "image_field": MultipleFileField(required=False),
     })
 from django.utils.translation import gettext as _
+
+
 class ArticleForm(ModelForm):
 
     image_field = MultipleFileField()
     class Meta:
         model = Article
-        fields = ['title','anouncement','text','tags','author']
+        fields = ['title','anouncement','text','tags']
         widgets = {
-            'anouncement': Textarea(attrs={'cols':80,'rows':2}),
-            'text': Textarea(attrs={'cols': 80, 'rows': 2}),
+            'title':Textarea(attrs={'cols':80,'rows':1,'minlength':5}),
+            'anouncement': Textarea(attrs={'cols':80,'rows':2,'minlength':5}),
+            'text': Textarea(attrs={'cols': 80, 'rows': 2,'minlength':100,}),
             'tags': CheckboxSelectMultiple(),
-            'author': Select()
+            #'author': Select()
         }
         labels={
             'anouncement': _('лейбл поля анонс'),
             'text':  _('лейбл поля текст'),
             'tags':  _('лейбл поля теги'),
-            'author':  _('лейбл поля авторы'),
         }

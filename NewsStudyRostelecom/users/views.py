@@ -41,13 +41,18 @@ def profile_update(request):
     if request.method == "POST":
         user_form = UserUpdateForm(request.POST, instance=user)
         account_form = AccountUpdateForm(request.POST, request.FILES, instance=account)
+        context = {'account_form': AccountUpdateForm(instance=account),
+                   'user_form': UserUpdateForm(instance=user)}
         if user_form.is_valid() and account_form.is_valid():
             user_form.save()
             account_form.save()
+
             messages.success(request,"Профиль успешно обновлен")
             return redirect('profile')
         else:
-            pass
+            error_dict= dict(account_form.errors)
+            error_dict.update(dict(user_form.errors))
+            messages.warning(request, error_dict)
     else:
         context = {'account_form':AccountUpdateForm(instance=account),
                    'user_form':UserUpdateForm(instance=user)}

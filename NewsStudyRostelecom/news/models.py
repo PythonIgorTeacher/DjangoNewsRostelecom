@@ -27,15 +27,16 @@ class PublishedToday(models.Manager):
     def get_queryset(self):
         return super(PublishedToday,self).get_queryset().filter(date__gte=datetime.date.today())
 
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 class Article(models.Model):
     categories = (('E','Economics'),
                   ('S','Science'),
                   ('IT','IT'))
     #поля                           #models.CASCADE SET_DEFAULT
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    title = models.CharField('Название',max_length=50,default='')
-    anouncement = models.TextField('Аннотация',max_length=250)
-    text = models.TextField('Текст новости')
+    title = models.CharField('Название',max_length=50,default='',validators=[MinLengthValidator(5)])
+    anouncement = models.TextField('Аннотация',max_length=250,validators = [MinLengthValidator(5),MaxLengthValidator(50)])
+    text = models.TextField('Текст новости',validators=[MinLengthValidator(100)])
     date = models.DateTimeField('Дата публикации',auto_now=True)
     category = models.CharField(choices=categories, max_length=20,verbose_name='Категории')
     tags = models.ManyToManyField(to=Tag, blank=True)

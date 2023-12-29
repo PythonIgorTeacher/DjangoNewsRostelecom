@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.core.validators import RegexValidator
+validate_phone = RegexValidator('\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}',
+                                      message='Номер телефона указан некорректно')
+
 class Account(models.Model):
     gender_choices= (('M','Male'),
                      ('F','Female'),
@@ -16,7 +20,7 @@ class Account(models.Model):
     vk = models.CharField(max_length=100,null=True)
     instagram = models.CharField(max_length=100,null=True)
     telegram = models.CharField(max_length=100,null=True)
-    phone = models.CharField(max_length=20,null=True)
+    phone = models.CharField(max_length=20,null=True,validators=[validate_phone])
     #pip install pillow в терминале если нет библиотеки
 
     def __str__(self):
