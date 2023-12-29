@@ -23,25 +23,41 @@ def search_auto(request):
     return HttpResponse(data, mimetype)
 
 def search(request):
+    # try:
+    #     del request.session['selected_author']
+    # except:
+    #     pass
+    # try:
+    #     del request.session['selected_category']
+    # except:
+    #     pass
     if request.method == 'POST': #пришел запрос из бокового меню
-        value = request.POST['search_input'] #находим новости
+        value = request.POST['search_input']  # находим новости
         articles = Article.objects.filter(title__icontains=value)
+        request.session['search_input'] = value
         if len(articles) == 1: #если одна- сразу открываем подробное отображение новости
             return render(request, 'news/news_detail.html', {'article': articles[0]})
-        else:
-            #если несколько - отправляем человека в функцию index со страницей-списком новостей и фильтрами
-            #не забываем передать поисковый запрос:
-            # либо через сессии:
-            request.session['search_input'] = value
-            return redirect('news')
+            #return redirect('news')
             #либо через фрагмент URLссылки:
             # но в таком случае придётся обрабатывать ссылку в Urls
             #функция reverse из модуля Urls добавит переданные аргументы в качестве get-аргументов.
             # return redirect(reverse('news', kwargs={'search_input':value}))
 
             # return render(request, 'news/news_list.html', {'articles': articles})
-    else:
-        return redirect('home')
+    value = request.session.get('search_input')
+    articles = Article.objects.filter(title__icontains=value)
+    articles = articles.order_by('-date')
+    total = len(articles)
+    p = Paginator(articles, 2)
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+    title = _(f'Результаты по запросу: {value}')
+    context = {'articles': page_obj,
+               'total': total,
+               'title': title
+               }
+    return render(request, 'news/news_search_list.html', context)
+
 
 
 from .utils import ViewCountMixin
@@ -138,6 +154,14 @@ from django.core.paginator import Paginator
 #     articles = Article.objects.all()
 from django.utils.translation import gettext as _
 def index(request):
+    if 'selected_category' not in dict(request.session):
+        selected_category = 0
+    else:
+        selected_category = request.session.get('selected_category')
+    if 'selected_author' not in dict(request.session):
+        selected_author = 0
+    else:
+        selected_author = request.session.get('selected_author')
     categories = Article.categories #создали перечень категорий
     author_list = User.objects.all() #создали перечень авторов
     if request.method == "POST":
